@@ -75,6 +75,28 @@ Component.Stage = function (element) {
    * Draw object snake
    */
 
+  if (trail.find((elm) => elm.x === snakeX && elm.y === snakeY)) {
+    if (snakeX == 0 && snakeY == 0) {
+      // return;
+    } else {
+      tail = 5;
+      score = 0;
+      level = 1;
+      stateKeyCode = null;
+      coorX = 0;
+      coorY = 0;
+      snakeX = objectSize;
+      snakeY = objectSize;
+      foodX = 15;
+      foodY = 15;
+      tingkat = 5;
+      trail = [];
+      context.fillStyle = "red";
+      context.font = "30px Arial";
+      context.fillText("Game Over", 100, 200);
+    }
+  }
+
   context.fillStyle = "lime";
   for (i = 0; i < trail.length; i++) {
     context.fillRect(trail[i].x * objectSize, trail[i].y * objectSize, objectSize - 2, objectSize - 2);
@@ -113,27 +135,10 @@ Component.Stage = function (element) {
   document.querySelector(".level").innerHTML = level;
 
   // reset and show game over when snake eat itself
-  for (i = 0; i < trail.length; i++) {
-    if (trail[i].x === snakeX && trail[i].y === snakeY) {
-      tail = 5;
-      score = 0;
-      level = 1;
-      stateKeyCode = null;
-      coorX = 0;
-      coorY = 0;
-      snakeX = objectSize;
-      snakeY = objectSize;
-      foodX = 15;
-      foodY = 15;
-      tingkat = 5;
-      context.fillStyle = "red";
-      context.font = "30px Arial";
-      context.fillText("Game Over", 100, 200);
-    }
-  }
+  console.log({ tail, snakeX, snakeY, trail });
 
   // reset and show game over when snake offsdide the canvas
-  if (snakeX < 0 || snakeX > objectSize - 1 || snakeY < 0 || snakeY > objectSize - 1) {
+  if (snakeX < 0 || snakeX >= objectSize - 1 || snakeY < 0 || snakeY >= objectSize - 1) {
     tail = 5;
     score = 0;
     level = 1;
@@ -145,6 +150,7 @@ Component.Stage = function (element) {
     foodX = 15;
     foodY = 15;
     tingkat = 5;
+    trail = [];
     context.fillStyle = "red";
     context.font = "30px Arial";
     context.fillText("Game Over", 100, 200);
@@ -156,7 +162,7 @@ Game.Snake = function (element) {
   if (level >= 1 && level <= 5) {
     setInterval(function () {
       new Component.Stage(element);
-    }, 1000 / (10 + level * 10));
+    }, 1000 / (5 + level * 5));
   }
 };
 
